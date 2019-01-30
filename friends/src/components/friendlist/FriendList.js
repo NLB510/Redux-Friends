@@ -5,6 +5,12 @@ import Friend from "./Friend"
 import {connect} from "react-redux"
 
 class FriendList extends React.Component {
+  
+  componentDidMount() {
+    //Fetch Data here
+  }
+
+  
   render(){
     return (
       <div>
@@ -14,6 +20,8 @@ class FriendList extends React.Component {
   }
 }
 
+
+//Connecting FriendList to store, pulling in all data needed
 const mapStateToProps = state => {
   console.log(state)
   return {
