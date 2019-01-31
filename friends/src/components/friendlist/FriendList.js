@@ -5,6 +5,10 @@ import Friend from "./Friend";
 import { connect } from "react-redux";
 import { getFriends } from "../../actions";
 
+import styled from "styled-components";
+
+
+
 class FriendList extends React.Component {
   componentDidMount() {
     //Fetch Data here
@@ -13,10 +17,12 @@ class FriendList extends React.Component {
 
   render() {
     const friendList = this.props.friends.map(friend => {
-      return <Friend key={friend.id} friend={friend} />;
+      return <React.Fragment key={friend.id}>
+          <Friend friend={friend} />
+        </React.Fragment>;
     });
 
-    return <div>{friendList}</div>;
+    return <FriendListContainer>{friendList}</FriendListContainer>;
   }
 }
 
@@ -28,6 +34,20 @@ const mapStateToProps = state => {
     status: state.status
   };
 };
+
+
+/* 
+==== Component Styles ====
+*/
+
+const FriendListContainer = styled.div`
+  width: 70%;
+  margin: 2% auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+`
+
 
 export default connect(
   mapStateToProps,

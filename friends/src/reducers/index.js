@@ -1,4 +1,10 @@
-import { FETCH_DATA, FETCH_SUCCESS, FETCH_FAILURE } from "../actions";
+import {
+  FETCH_DATA,
+  FETCH_SUCCESS,
+  FETCH_FAILURE,
+  ADDING_FRIEND,
+  CANCEL_ADD
+} from "../actions";
 
 const emptyFriend = {
   name: "",
@@ -50,6 +56,24 @@ const reducer = (state = initialState, action) => {
           fetchingFriends: true
         }
       }
+    case ADDING_FRIEND: {
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          savingFriends: true
+        }
+      }
+    }
+    case CANCEL_ADD: {
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          savingFriends: false
+        }
+      }
+    }
     default:
       return state;
   }

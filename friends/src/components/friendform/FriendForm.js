@@ -1,5 +1,8 @@
 import React from "react";
 
+import { connect } from "react-redux";
+import { addingFriend, cancelAdd } from "../../actions";
+
 class FriendForm extends React.Component {
   constructor(props) {
     super(props);
@@ -17,16 +20,32 @@ class FriendForm extends React.Component {
     this.setState({
       [name]: value
     });
+    this.props.addingFriend();
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state)
-  }
+    console.log(this.state);
+  };
+
+  cancelChange = e => {
+    e.preventDefault();
+    this.setState({
+      nameInput: "",
+      ageInput: "",
+      emailInput: ""
+    });
+    this.props.cancelAdd();
+  };
 
   render() {
     return (
       <div>
+        {this.props.status.savingFriends ? (
+          <h1>Add Friend</h1>
+        ) : (
+          <h1>Friend List</h1>
+        )}
         <form onSubmit={this.handleSubmit}>
           <div>
             <input
@@ -52,10 +71,27 @@ class FriendForm extends React.Component {
             />
           </div>
           <button type="submit">Submit</button>
+          
+          {
+            //Add cancel button only if user types in form
+            this.props.status.savingFriends &&
+            <button onClick={this.cancelChange}>Cancel</button>
+          }
+
         </form>
       </div>
     );
   }
 }
 
-export default FriendForm;
+const mapStateToProps = state => {
+  console.log(state);
+  return {
+    status: state.status
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { addingFriend, cancelAdd }
+)(FriendForm);
