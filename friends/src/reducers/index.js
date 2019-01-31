@@ -1,3 +1,5 @@
+import { FETCH_DATA, FETCH_SUCCESS, FETCH_FAILURE } from "../actions";
+
 const emptyFriend = {
   name: "",
   age: "",
@@ -5,43 +7,49 @@ const emptyFriend = {
 };
 
 const initialState = {
-  friends: [
-    {
-      id: 1,
-      name: "Ben",
-      age: 30,
-      email: "ben@lambdaschool.com"
-    },
-    {
-      id: 2,
-      name: "Austen",
-      age: 45,
-      email: "austen@lambdaschool.com"
-    },
-    {
-      id: 3,
-      name: "Ryan",
-      age: 15,
-      email: "ryan@lambdaschool.com"
-    },
-    {
-      id: 4,
-      name: "Sean",
-      age: 35,
-      email: "sean@lambdaschool.com"
-    },
-    {
-      id: 5,
-      name: "Michelle",
-      age: 67,
-      email: "michelle@gmail.com"
-    }
-  ],
+  status: {
+    fetchingFriends: false,
+    friendsFetched: false,
+    friendsSaved: false,
+    savingFriends: false,
+    updatingFriend: false,
+    friendUpdated: false,
+    deletingFriend: false,
+    friendDeleted: false
+  },
+  friends: [],
   friend: emptyFriend
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case FETCH_DATA:
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          fetchingFriends: true
+        }
+      };
+      case FETCH_SUCCESS: 
+      return {
+        ...state,
+        friends: action.payload,
+        status: {
+          ...state.status,
+          fetchingFriends: false,
+          friendsFetched: true
+        }
+      }
+      case FETCH_FAILURE: 
+      return {
+        ...state,
+        status: {
+          ...state.status,
+          friendsFetched: false,
+          fetchingFriends: true
+        }
+      }
     default:
       return state;
   }
