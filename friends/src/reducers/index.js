@@ -6,7 +6,8 @@ import {
   CANCEL_ADD,
   DELETING_FRIEND,
   DELETE_FRIEND,
-  DELETE_FAILURE
+  DELETE_FAILURE,
+  FRIEND_ADDED
 } from "../actions";
 
 const emptyFriend = {
@@ -71,6 +72,15 @@ const reducer = (state = initialState, action) => {
           savingFriends: true
         }
       };
+    }
+    case FRIEND_ADDED: 
+    return {
+      ...state,
+      friends: action.payload,
+      status: {
+        ...state.status,
+        savingFriends: false
+      }
     }
     case CANCEL_ADD: {
       return {

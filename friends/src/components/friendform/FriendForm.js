@@ -1,24 +1,31 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { addingFriend, cancelAdd } from "../../actions";
+import { addFriend, addingFriend, cancelAdd } from "../../actions";
 
 class FriendForm extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      nameInput: "",
-      ageInput: "",
-      emailInput: ""
+      friend: {
+        name: "",
+        age: "",
+        email: ""
+      }
     };
   }
 
   handleChange = e => {
     const { name, value } = e.target;
 
-    this.setState({
-      [name]: value
+    this.setState(prevState => {
+      return {
+        friend: {
+          ...prevState.friend,
+          [name]: value
+        }
+      };
     });
     this.props.addingFriend();
   };
@@ -26,14 +33,24 @@ class FriendForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     console.log(this.state);
+    this.props.addFriend(this.state.friend);
+    this.setState({
+      friend: {
+        name: "",
+        age: "",
+        email: ""
+      }
+    });
   };
 
   cancelChange = e => {
     e.preventDefault();
     this.setState({
-      nameInput: "",
-      ageInput: "",
-      emailInput: ""
+      friend: {
+        name: "",
+        age: "",
+        email: ""
+      }
     });
     this.props.cancelAdd();
   };
@@ -51,23 +68,26 @@ class FriendForm extends React.Component {
             <input
               type="text"
               placeholder="Enter Name"
-              name="nameInput"
-              value={this.state.nameInput}
+              name="name"
+              value={this.state.friend.name}
               onChange={this.handleChange}
+              required
             />
             <input
               type="text"
               placeholder="Enter Age"
-              name="ageInput"
-              value={this.state.ageInput}
+              name="age"
+              value={this.state.friend.age}
               onChange={this.handleChange}
+              required
             />
             <input
               type="text"
               placeholder="Enter Email"
-              name="emailInput"
-              value={this.state.emailInput}
+              name="email"
+              value={this.state.friend.email}
               onChange={this.handleChange}
+              required
             />
           </div>
           <button type="submit">Submit</button>
@@ -91,5 +111,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { addingFriend, cancelAdd }
+  { addFriend, addingFriend, cancelAdd }
 )(FriendForm);
