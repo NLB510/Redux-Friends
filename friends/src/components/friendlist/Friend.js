@@ -1,12 +1,13 @@
 import React from "react";
 
-
 import styled from "styled-components"
+import {connect} from "react-redux"
+
 
 
 const Friend = props => {
   const { name, age, email, id } = props.friend;
-  // console.log(props);
+  console.log(props);
   return (
     <FriendContainer>
       <h2>{name}</h2>
@@ -14,7 +15,8 @@ const Friend = props => {
       <p><strong>Email:</strong> {email}</p>
       <ButtonContainer>
         <button>Edit</button>
-        <button>Delete</button>
+        <button onClick={(e) => props.deleteFriendHandler(e, id)}>Delete</button>
+        {/* {props.status.deletingFriend ? <button>Confirm</button> : <button onClick={(e) => props.startDelete(e)}>Delete</button>} */}
       </ButtonContainer>
     </FriendContainer>
   
@@ -48,4 +50,11 @@ const ButtonContainer = styled.div`
   justify-content: space-between;
 `;
 
-export default Friend;
+const mapStateToProps = state => {
+  return {
+    status: state.status
+  }
+}
+
+
+export default connect(mapStateToProps,{})(Friend);

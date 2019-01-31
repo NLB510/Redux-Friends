@@ -3,7 +3,10 @@ import {
   FETCH_SUCCESS,
   FETCH_FAILURE,
   ADDING_FRIEND,
-  CANCEL_ADD
+  CANCEL_ADD,
+  DELETING_FRIEND,
+  DELETE_FRIEND,
+  DELETE_FAILURE
 } from "../actions";
 
 const emptyFriend = {
@@ -24,7 +27,9 @@ const initialState = {
     friendDeleted: false
   },
   friends: [],
-  friend: emptyFriend
+  friend: emptyFriend,
+  error: ''
+
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,7 +42,7 @@ const reducer = (state = initialState, action) => {
           fetchingFriends: true
         }
       };
-      case FETCH_SUCCESS: 
+    case FETCH_SUCCESS:
       return {
         ...state,
         friends: action.payload,
@@ -45,17 +50,19 @@ const reducer = (state = initialState, action) => {
           ...state.status,
           fetchingFriends: false,
           friendsFetched: true
-        }
-      }
-      case FETCH_FAILURE: 
+        },
+        error: ''
+      };
+    case FETCH_FAILURE:
       return {
         ...state,
         status: {
           ...state.status,
           friendsFetched: false,
           fetchingFriends: true
-        }
-      }
+        },
+        error: action.payload
+      };
     case ADDING_FRIEND: {
       return {
         ...state,
@@ -63,7 +70,7 @@ const reducer = (state = initialState, action) => {
           ...state.status,
           savingFriends: true
         }
-      }
+      };
     }
     case CANCEL_ADD: {
       return {
@@ -72,7 +79,37 @@ const reducer = (state = initialState, action) => {
           ...state.status,
           savingFriends: false
         }
+      };
+    }
+    case DELETING_FRIEND: 
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        deletingFriend: true,
+        friendDeleted: false
       }
+    }
+    case DELETE_FRIEND: 
+    return {
+      ...state,
+      friends: action.payload,
+      status: {
+        ...state.status,
+        deletingFriend: false,
+        friendDeleted: true
+      },
+      error: ''
+    }
+    case DELETE_FAILURE: 
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        deletingFriend: true,
+      },
+      error: action.payload
+
     }
     default:
       return state;

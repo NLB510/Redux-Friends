@@ -3,11 +3,9 @@ import React from "react";
 import Friend from "./Friend";
 
 import { connect } from "react-redux";
-import { getFriends } from "../../actions";
+import { getFriends, deletingFriend, deleteFriend } from "../../actions";
 
 import styled from "styled-components";
-
-
 
 class FriendList extends React.Component {
   componentDidMount() {
@@ -15,11 +13,24 @@ class FriendList extends React.Component {
     this.props.getFriends();
   }
 
+  
+
+  deleteFriendHandler = (e, id) => {
+    e.preventDefault();
+    this.props.deleteFriend(id);
+  };
+
   render() {
     const friendList = this.props.friends.map(friend => {
-      return <React.Fragment key={friend.id}>
-          <Friend friend={friend} />
-        </React.Fragment>;
+      return (
+        <React.Fragment key={friend.id}>
+          <Friend
+            friend={friend}
+           
+            deleteFriendHandler={this.deleteFriendHandler}
+          />
+        </React.Fragment>
+      );
     });
 
     return <FriendListContainer>{friendList}</FriendListContainer>;
@@ -28,13 +39,12 @@ class FriendList extends React.Component {
 
 //Connecting FriendList to store, pulling in all data needed
 const mapStateToProps = state => {
-  console.log(state.status);
+  // console.log(state.status);
   return {
     friends: state.friends,
     status: state.status
   };
 };
-
 
 /* 
 ==== Component Styles ====
@@ -46,10 +56,9 @@ const FriendListContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-`
-
+`;
 
 export default connect(
   mapStateToProps,
-  {getFriends}
+  { getFriends, deletingFriend, deleteFriend }
 )(FriendList);

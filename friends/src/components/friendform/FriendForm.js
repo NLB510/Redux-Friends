@@ -71,13 +71,11 @@ class FriendForm extends React.Component {
             />
           </div>
           <button type="submit">Submit</button>
-          
-          {
-            //Add cancel button only if user types in form
-            this.props.status.savingFriends &&
-            <button onClick={this.cancelChange}>Cancel</button>
-          }
 
+          {//Add cancel button only if user types in form
+          this.props.status.savingFriends && (
+            <button onClick={this.cancelChange}>Cancel</button>
+          )}
         </form>
       </div>
     );
@@ -85,7 +83,7 @@ class FriendForm extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
+  // console.log(state);
   return {
     status: state.status
   };
